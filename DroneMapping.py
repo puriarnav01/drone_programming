@@ -27,9 +27,9 @@ a = 0
 yaw = 0
 
 kp.init()
-# drone = tello.Tello()
-# drone.connect()
-# print(drone.get_battery())
+drone = tello.Tello()
+drone.connect()
+print(drone.get_battery())
 
 points = []
 
@@ -81,23 +81,23 @@ def getKeyboardInput():
         ud = -speed
 
     if kp.getKey("a"):
-        yv = aspeed
+        yv = -aspeed
         yaw -= aInterval
 
     elif kp.getKey("d"):
-        yv = -aspeed
+        yv = aspeed
         yaw += aInterval
 
     if kp.getKey("q"):
-        # drone.land()
+        drone.land()
         sleep(3)
 
-    #if kp.getKey("e"):
-        #drone.takeoff()
+    if kp.getKey("e"):
+        drone.takeoff()
 
     if kp.getKey("z"):
         cv2.imwrite(
-            f"/Users/arnavpuri/Documents/drone/images/{time.time()}.jpg")
+            f"/Users/arnavpuri/Documents/drone/images/{time()}.jpg")
 
     # we have updated our values, now need to convert to cartesian plane
     sleep(interval)
@@ -122,7 +122,7 @@ def drawPoints(img, points):
 # if it pressed, change rc control values
 while True:
     vals = getKeyboardInput()
-    # drone.send_rc_control(vals[0], vals[1], vals[2], vals[3])
+    drone.send_rc_control(vals[0], vals[1], vals[2], vals[3])
 
     img = np.zeros((1000, 1000, 3), np.uint8)
     points.append([vals[4], vals[5]])
